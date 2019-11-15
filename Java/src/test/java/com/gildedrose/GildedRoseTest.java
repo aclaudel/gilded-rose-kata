@@ -6,32 +6,34 @@ import org.junit.Test;
 
 public class GildedRoseTest {
 
+    Item item;
+
     @Test
     public void sellIn_value_decreases_by_1() {
-        Item item = new Item("shoes of flying", 10, 10);
-        new GildedRose(new Item[]{item}).updateQuality();
-        assertEquals(9, item.sellIn);
+        given_a_new_item("shoes of flying", 10, 10);
+        when_the_items_are_updated();
+        then_the_sellin_value_is(9);
     }
 
     @Test
     public void sellIn_doesnt_decrease_with_Sulfuras() {
-        Item item = new Item("Sulfuras, Hand of Ragnaros", 10, 10);
-        new GildedRose(new Item[]{item}).updateQuality();
-        assertEquals(10, item.sellIn);
+        given_a_new_item("Sulfuras, Hand of Ragnaros", 10, 10);
+        when_the_items_are_updated();
+        then_the_sellin_value_is(10);
     }
 
     @Test
     public void quality_decreases_by_1() {
-        Item item = new Item("Unicorn's Kidney", 10, 2);
-        new GildedRose(new Item[]{item}).updateQuality();
-        assertEquals(1, item.quality);
+        given_a_new_item("Unicorn's Kidney", 10, 2);
+        when_the_items_are_updated();
+        then_the_quality_is(1);
     }
 
     @Test
     public void quality_can_not_go_lower_than_0() {
-        Item item = new Item("Unicorn's Kidney", 10, 0);
-        new GildedRose(new Item[]{item}).updateQuality();
-        assertEquals(0, item.quality);
+        given_a_new_item("Unicorn's Kidney", 10, 0);
+        when_the_items_are_updated();
+        then_the_quality_is(0, item.quality);
     }
 
     @Test
@@ -41,10 +43,34 @@ public class GildedRoseTest {
         quality_doesnt_decrease_for_this_item("Sulfuras, Hand of Ragnaros");
     }
 
+    @Test
+    public void quality_increases_for_aged_brie_by_1() {
+
+    }
+
+    private void then_the_sellin_value_is(int expectedSellIn) {
+        assertEquals(expectedSellIn, item.sellIn);
+    }
+
+    private void when_the_items_are_updated() {
+        new GildedRose(new Item[]{item}).updateItems();
+    }
+
+    private void then_the_quality_is(int expectedQuality) {
+        assertEquals(expectedQuality, item.quality);
+    }
+
+    private void then_the_quality_is(int i, int quality) {
+        assertEquals(i, quality);
+    }
+
     private void quality_doesnt_decrease_for_this_item(String itemName) {
-        Item item = new Item(itemName, 10, 10);
-        new GildedRose(new Item[]{item}).updateQuality();
+        given_a_new_item(itemName, 10, 10);
+        when_the_items_are_updated();
         assertTrue(item.quality >= 10);
     }
 
+    private void given_a_new_item(String itemName, int sellIn, int quality) {
+        item = new Item(itemName, sellIn, quality);
+    }
 }

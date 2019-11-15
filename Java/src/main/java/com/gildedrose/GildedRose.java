@@ -7,7 +7,7 @@ class GildedRose {
         this.items = items;
     }
 
-    public void updateQuality() {
+    public void updateItems() {
         for (int i = 0; i < items.length; i++) {
             Item currentItem = items[i];
             if (itemIsNot("Aged Brie", currentItem)

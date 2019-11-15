@@ -9,62 +9,72 @@ class GildedRose {
 
     public void updateQuality() {
         for (int i = 0; i < items.length; i++) {
-            if (!items[i].name.equals("Aged Brie")
-                    && !items[i].name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-                if (items[i].quality > 0) {
-                    if (isNotSulfuras(items[i])) {
-                        items[i].quality = items[i].quality - 1;
+            Item currentItem = items[i];
+            if (itemIsNot("Aged Brie", currentItem)
+                && itemIsNot("Backstage passes to a TAFKAL80ETC concert", currentItem)) {
+                if (qualityIsGreaterThanZero(currentItem)) {
+                    if (itemIsNot("Sulfuras, Hand of Ragnaros", currentItem)) {
+                        decreaseQualityValue(currentItem);
                     }
                 }
             } else {
-                if (items[i].quality < 50) {
-                    items[i].quality = items[i].quality + 1;
+                if (currentItem.quality < 50) {
+                    currentItem.quality = currentItem.quality + 1;
 
-                    if (items[i].name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-                        if (items[i].sellIn < 11) {
-                            if (items[i].quality < 50) {
-                                items[i].quality = items[i].quality + 1;
+                    if (currentItem.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
+                        if (currentItem.sellIn < 11) {
+                            if (currentItem.quality < 50) {
+                                currentItem.quality = currentItem.quality + 1;
                             }
                         }
 
-                        if (items[i].sellIn < 6) {
-                            if (items[i].quality < 50) {
-                                items[i].quality = items[i].quality + 1;
+                        if (currentItem.sellIn < 6) {
+                            if (currentItem.quality < 50) {
+                                currentItem.quality = currentItem.quality + 1;
                             }
                         }
                     }
                 }
             }
 
-            if (isNotSulfuras(items[i])) {
-                decreaseSellInValue(i);
+            if (itemIsNot("Sulfuras, Hand of Ragnaros", currentItem)) {
+                decreaseSellInValue(currentItem);
             }
 
-            if (items[i].sellIn < 0) {
-                if (!items[i].name.equals("Aged Brie")) {
-                    if (!items[i].name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-                        if (items[i].quality > 0) {
-                            if (isNotSulfuras(items[i])) {
-                                items[i].quality = items[i].quality - 1;
+            if (currentItem.sellIn < 0) {
+                if (itemIsNot("Aged Brie", currentItem)) {
+                    if (itemIsNot("Backstage passes to a TAFKAL80ETC concert", currentItem)) {
+                        if (qualityIsGreaterThanZero(currentItem)) {
+                            if (itemIsNot("Sulfuras, Hand of Ragnaros", currentItem)) {
+                                decreaseQualityValue(currentItem);
                             }
                         }
                     } else {
-                        items[i].quality = items[i].quality - items[i].quality;
+                        currentItem.quality = currentItem.quality - currentItem.quality;
                     }
                 } else {
-                    if (items[i].quality < 50) {
-                        items[i].quality = items[i].quality + 1;
+                    if (currentItem.quality < 50) {
+                        currentItem.quality = currentItem.quality + 1;
                     }
                 }
             }
         }
     }
 
-    private void decreaseSellInValue(int i) {
-        items[i].sellIn = items[i].sellIn - 1;
+    private void decreaseQualityValue(Item item) {
+        item.quality -= 1;
     }
 
-    private boolean isNotSulfuras(Item item) {
-        return !item.name.equals("Sulfuras, Hand of Ragnaros");
+    private boolean qualityIsGreaterThanZero(Item item) {
+        return item.quality > 0;
     }
+
+    private boolean itemIsNot(String itemName, Item item) {
+        return !item.name.equals(itemName);
+    }
+
+    private void decreaseSellInValue(Item item) {
+        item.sellIn -= 1;
+    }
+
 }

@@ -24,17 +24,7 @@ class GildedRose {
                     increaseQualityValue(currentItem);
 
                     if (itemIs("Backstage passes to a TAFKAL80ETC concert", currentItem)) {
-                        if (currentItem.sellIn < 11) {
-                            if (isBelowMaximumQuality(currentItem)) {
-                                increaseQualityValue(currentItem);
-                            }
-                        }
-
-                        if (currentItem.sellIn < 6) {
-                            if (isBelowMaximumQuality(currentItem)) {
-                                increaseQualityValue(currentItem);
-                            }
-                        }
+                        addHypeQuality(currentItem);
                     }
                 }
             }
@@ -43,7 +33,7 @@ class GildedRose {
                 decreaseSellInValue(currentItem);
             }
 
-            if (currentItem.sellIn < 0) {
+            if (isSellInDatePassed(currentItem)) {
                 if (itemIsNot("Aged Brie", currentItem)) {
                     if (itemIsNot("Backstage passes to a TAFKAL80ETC concert", currentItem)) {
                         if (isAboveMinimumQuality(currentItem)) {
@@ -52,7 +42,7 @@ class GildedRose {
                             }
                         }
                     } else {
-                        currentItem.quality = 0;
+                        dropQuality(currentItem);
                     }
                 } else {
                     if (isBelowMaximumQuality(currentItem)) {
@@ -61,6 +51,28 @@ class GildedRose {
                 }
             }
         }
+    }
+
+    private void dropQuality(Item currentItem) {
+        currentItem.quality = 0;
+    }
+
+    private void addHypeQuality(Item currentItem) {
+        if (currentItem.sellIn < 11) {
+            if (isBelowMaximumQuality(currentItem)) {
+                increaseQualityValue(currentItem);
+            }
+        }
+
+        if (currentItem.sellIn < 6) {
+            if (isBelowMaximumQuality(currentItem)) {
+                increaseQualityValue(currentItem);
+            }
+        }
+    }
+
+    private boolean isSellInDatePassed(Item currentItem) {
+        return currentItem.sellIn < 0;
     }
 
     private boolean itemIs(String name, Item currentItem) {

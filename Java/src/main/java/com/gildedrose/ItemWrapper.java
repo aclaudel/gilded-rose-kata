@@ -3,7 +3,7 @@ package com.gildedrose;
 public class ItemWrapper {
     public static final int MAXIMUM_QUALITY = 50;
     public static final int MINIMUM_QUALITY = 0;
-    private Item item;
+    protected Item item;
 
     public ItemWrapper(Item item) {
         this.item = item;
@@ -58,4 +58,17 @@ public class ItemWrapper {
     void decreaseSellInValue() {
         item.sellIn -= 1;
     }
+
+    void update() {
+        if (isAboveMinimumQuality()) {
+            decreaseQualityValue();
+        }
+        decreaseSellInValue();
+        if (isSellInDatePassed()) {
+            if (isAboveMinimumQuality()) {
+                decreaseQualityValue();
+            }
+        }
+    }
+
 }

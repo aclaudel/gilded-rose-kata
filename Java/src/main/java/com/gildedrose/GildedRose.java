@@ -12,60 +12,37 @@ class GildedRose {
             Item currentItem = items[i];
             ItemWrapper itemWrapper = new ItemWrapper(currentItem);
 
-            /*
-
-                if (STANDARD) {
-                    if (quality > 0)
-                        decrease quality
-                    decrease sellin
-                    if (sellin < 0)
-                        decrease quality
-                }
-
-                if(BRIE){
-                    if (quality < 50)
-                        increase quality
-                    decrease sellin
-                    if sellin < 0 && quality < 50
-                        increase quality
-                }
-             */
             if (itemWrapper.itemIs("Sulfuras, Hand of Ragnaros")){
+                updateSulfuras();
                 continue;
             }
+
             if (itemWrapper.itemIs("Backstage passes to a TAFKAL80ETC concert")) {
-                if (itemWrapper.isBelowMaximumQuality()){
-                    itemWrapper.increaseQualityValue();
-                    itemWrapper.addHypeQuality();
-                }
-                itemWrapper.decreaseSellInValue();
-                if (itemWrapper.isSellInDatePassed()) {
-                    itemWrapper.dropQuality();
-                }
+                updateBackstage(itemWrapper);
                 continue;
             }
+
             if( itemWrapper.itemIs("Aged Brie")){
-                if (itemWrapper.isBelowMaximumQuality()) {
-                    itemWrapper.increaseQualityValue();
-                }
-                itemWrapper.decreaseSellInValue();
-                if (itemWrapper.isSellInDatePassed() && itemWrapper.isBelowMaximumQuality()){
-                    itemWrapper.increaseQualityValue();
-                }
+                new AgedBrie(currentItem).update();
                 continue;
             }
 
-            // Standard Object
-            if (itemWrapper.isAboveMinimumQuality()) {
-                itemWrapper.decreaseQualityValue();
-            }
-            itemWrapper.decreaseSellInValue();
-            if (itemWrapper.isSellInDatePassed()) {
-                if (itemWrapper.isAboveMinimumQuality()) {
-                    itemWrapper.decreaseQualityValue();
-                }
-            }
+            itemWrapper.update();
+        }
+    }
 
+    private void updateSulfuras() {
+
+    }
+
+    private void updateBackstage(ItemWrapper itemWrapper) {
+        if (itemWrapper.isBelowMaximumQuality()){
+            itemWrapper.increaseQualityValue();
+            itemWrapper.addHypeQuality();
+        }
+        itemWrapper.decreaseSellInValue();
+        if (itemWrapper.isSellInDatePassed()) {
+            itemWrapper.dropQuality();
         }
     }
 

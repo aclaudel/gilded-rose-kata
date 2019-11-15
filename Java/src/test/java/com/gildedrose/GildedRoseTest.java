@@ -53,6 +53,21 @@ public class GildedRoseTest {
         then_the_quality_is(21);
     }
 
+    @Test
+    public void quality_increases_for_backstage() {
+        given_a_new_item(BACKSTAGE,12,20);
+        when_the_items_are_updated();
+        then_the_quality_is(21);
+
+        given_a_new_item(BACKSTAGE,10,20);
+        when_the_items_are_updated();
+        then_the_quality_is(22);
+
+        given_a_new_item(BACKSTAGE,5,20);
+        when_the_items_are_updated();
+        then_the_quality_is(23);
+    }
+
     private void then_the_sellin_value_is(int expectedSellIn) {
         assertEquals(expectedSellIn, item.sellIn);
     }

@@ -23,7 +23,7 @@ class GildedRose {
                 if (isBelowMaximumQuality(currentItem)) {
                     increaseQualityValue(currentItem);
 
-                    if (currentItem.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
+                    if (itemIs("Backstage passes to a TAFKAL80ETC concert", currentItem)) {
                         if (currentItem.sellIn < 11) {
                             if (isBelowMaximumQuality(currentItem)) {
                                 increaseQualityValue(currentItem);
@@ -63,6 +63,10 @@ class GildedRose {
         }
     }
 
+    private boolean itemIs(String name, Item currentItem) {
+        return currentItem.name.equals(name);
+    }
+
     private boolean isBelowMaximumQuality(Item currentItem) {
         return currentItem.quality < MAXIMUM_QUALITY;
     }
@@ -80,7 +84,7 @@ class GildedRose {
     }
 
     private boolean itemIsNot(String itemName, Item item) {
-        return !item.name.equals(itemName);
+        return !itemIs(itemName, item);
     }
 
     private void decreaseSellInValue(Item item) {

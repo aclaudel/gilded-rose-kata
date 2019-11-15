@@ -1,6 +1,8 @@
 package com.gildedrose;
 
 class GildedRose {
+    public static final int MAXIMUM_QUALITY = 50;
+    public static final int MINIMUM_QUALITY = 0;
     Item[] items;
 
     public GildedRose(Item[] items) {
@@ -12,25 +14,25 @@ class GildedRose {
             Item currentItem = items[i];
             if (itemIsNot("Aged Brie", currentItem)
                 && itemIsNot("Backstage passes to a TAFKAL80ETC concert", currentItem)) {
-                if (qualityIsGreaterThanZero(currentItem)) {
+                if (isAboveMinimumQuality(currentItem)) {
                     if (itemIsNot("Sulfuras, Hand of Ragnaros", currentItem)) {
                         decreaseQualityValue(currentItem);
                     }
                 }
             } else {
-                if (currentItem.quality < 50) {
-                    currentItem.quality = currentItem.quality + 1;
+                if (isBelowMaximumQuality(currentItem)) {
+                    increaseQualityValue(currentItem);
 
                     if (currentItem.name.equals("Backstage passes to a TAFKAL80ETC concert")) {
                         if (currentItem.sellIn < 11) {
-                            if (currentItem.quality < 50) {
-                                currentItem.quality = currentItem.quality + 1;
+                            if (isBelowMaximumQuality(currentItem)) {
+                                increaseQualityValue(currentItem);
                             }
                         }
 
                         if (currentItem.sellIn < 6) {
-                            if (currentItem.quality < 50) {
-                                currentItem.quality = currentItem.quality + 1;
+                            if (isBelowMaximumQuality(currentItem)) {
+                                increaseQualityValue(currentItem);
                             }
                         }
                     }
@@ -44,7 +46,7 @@ class GildedRose {
             if (currentItem.sellIn < 0) {
                 if (itemIsNot("Aged Brie", currentItem)) {
                     if (itemIsNot("Backstage passes to a TAFKAL80ETC concert", currentItem)) {
-                        if (qualityIsGreaterThanZero(currentItem)) {
+                        if (isAboveMinimumQuality(currentItem)) {
                             if (itemIsNot("Sulfuras, Hand of Ragnaros", currentItem)) {
                                 decreaseQualityValue(currentItem);
                             }
@@ -53,20 +55,28 @@ class GildedRose {
                         currentItem.quality = currentItem.quality - currentItem.quality;
                     }
                 } else {
-                    if (currentItem.quality < 50) {
-                        currentItem.quality = currentItem.quality + 1;
+                    if (isBelowMaximumQuality(currentItem)) {
+                        increaseQualityValue(currentItem);
                     }
                 }
             }
         }
     }
 
+    private boolean isBelowMaximumQuality(Item currentItem) {
+        return currentItem.quality < MAXIMUM_QUALITY;
+    }
+
+    private void increaseQualityValue(Item currentItem) {
+        currentItem.quality = currentItem.quality + 1;
+    }
+
     private void decreaseQualityValue(Item item) {
         item.quality -= 1;
     }
 
-    private boolean qualityIsGreaterThanZero(Item item) {
-        return item.quality > 0;
+    private boolean isAboveMinimumQuality(Item item) {
+        return item.quality > MINIMUM_QUALITY;
     }
 
     private boolean itemIsNot(String itemName, Item item) {

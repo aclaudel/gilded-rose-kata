@@ -6,6 +6,9 @@ import org.junit.Test;
 
 public class GildedRoseTest {
 
+    public static final String AGED_BRIE = "Aged Brie";
+    public static final String BACKSTAGE = "Backstage passes to a TAFKAL80ETC concert";
+    public static final String SULFURAS = "Sulfuras, Hand of Ragnaros";
     Item item;
 
     @Test
@@ -38,14 +41,16 @@ public class GildedRoseTest {
 
     @Test
     public void quality_doesnt_decrease_with_following_items() {
-        quality_doesnt_decrease_for_this_item("Aged Brie");
-        quality_doesnt_decrease_for_this_item("Backstage passes to a TAFKAL80ETC concert");
-        quality_doesnt_decrease_for_this_item("Sulfuras, Hand of Ragnaros");
+        quality_doesnt_decrease_for_this_item(AGED_BRIE);
+        quality_doesnt_decrease_for_this_item(BACKSTAGE);
+        quality_doesnt_decrease_for_this_item(SULFURAS);
     }
 
     @Test
     public void quality_increases_for_aged_brie_by_1() {
-
+        given_a_new_item(AGED_BRIE,10,20);
+        when_the_items_are_updated();
+        then_the_quality_is(21);
     }
 
     private void then_the_sellin_value_is(int expectedSellIn) {

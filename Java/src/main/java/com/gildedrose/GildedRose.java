@@ -52,7 +52,7 @@ class GildedRose {
                             }
                         }
                     } else {
-                        currentItem.quality = currentItem.quality - currentItem.quality;
+                        currentItem.quality = 0;
                     }
                 } else {
                     if (isBelowMaximumQuality(currentItem)) {

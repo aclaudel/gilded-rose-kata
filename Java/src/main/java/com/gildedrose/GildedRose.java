@@ -13,25 +13,6 @@ class GildedRose {
             ItemWrapper itemWrapper = new ItemWrapper(currentItem);
 
             /*
-                if(BRIE){
-                    if (quality < 50)
-                        increase quality
-                    decrease sellin
-                    if sellin < 0 && quality < 50
-                        increase quality
-                }
-
-                if (SULFURAS)
-                {}
-
-                if (BACKSTAGE){
-                    if (quality < 50)
-                        increase quality
-                        increase hype
-                    decrease sellin
-                    if (sellDatePassed)
-                        quality 0
-                }
 
                 if (STANDARD) {
                     if (quality > 0)
@@ -41,42 +22,50 @@ class GildedRose {
                         decrease quality
                 }
 
+                if(BRIE){
+                    if (quality < 50)
+                        increase quality
+                    decrease sellin
+                    if sellin < 0 && quality < 50
+                        increase quality
+                }
              */
             if (itemWrapper.itemIs("Sulfuras, Hand of Ragnaros")){
                 continue;
             }
-            if (itemWrapper.itemIsNot("Aged Brie")
-                && itemWrapper.itemIsNot("Backstage passes to a TAFKAL80ETC concert")) {
+            if (itemWrapper.itemIs("Backstage passes to a TAFKAL80ETC concert")) {
+                if (itemWrapper.isBelowMaximumQuality()){
+                    itemWrapper.increaseQualityValue();
+                    itemWrapper.addHypeQuality();
+                }
+                itemWrapper.decreaseSellInValue();
+                if (itemWrapper.isSellInDatePassed()) {
+                    itemWrapper.dropQuality();
+                }
+                continue;
+            }
+            if( itemWrapper.itemIs("Aged Brie")){
+                if (itemWrapper.isBelowMaximumQuality()) {
+                    itemWrapper.increaseQualityValue();
+                }
+                itemWrapper.decreaseSellInValue();
+                if (itemWrapper.isSellInDatePassed() && itemWrapper.isBelowMaximumQuality()){
+                    itemWrapper.increaseQualityValue();
+                }
+                continue;
+            }
+
+            // Standard Object
+            if (itemWrapper.isAboveMinimumQuality()) {
+                itemWrapper.decreaseQualityValue();
+            }
+            itemWrapper.decreaseSellInValue();
+            if (itemWrapper.isSellInDatePassed()) {
                 if (itemWrapper.isAboveMinimumQuality()) {
                     itemWrapper.decreaseQualityValue();
                 }
-            } else {
-                if (itemWrapper.isBelowMaximumQuality()) {
-                    itemWrapper.increaseQualityValue();
-
-                    if (itemWrapper.itemIs("Backstage passes to a TAFKAL80ETC concert")) {
-                        itemWrapper.addHypeQuality();
-                    }
-                }
             }
 
-            itemWrapper.decreaseSellInValue();
-
-            if (itemWrapper.isSellInDatePassed()) {
-                if (itemWrapper.itemIsNot("Aged Brie")) {
-                    if (itemWrapper.itemIsNot("Backstage passes to a TAFKAL80ETC concert")) {
-                        if (itemWrapper.isAboveMinimumQuality()) {
-                            itemWrapper.decreaseQualityValue();
-                        }
-                    } else {
-                        itemWrapper.dropQuality();
-                    }
-                } else {
-                    if (itemWrapper.isBelowMaximumQuality()) {
-                        itemWrapper.increaseQualityValue();
-                    }
-                }
-            }
         }
     }
 

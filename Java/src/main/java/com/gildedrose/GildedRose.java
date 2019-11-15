@@ -1,8 +1,6 @@
 package com.gildedrose;
 
 class GildedRose {
-    public static final int MAXIMUM_QUALITY = 50;
-    public static final int MINIMUM_QUALITY = 0;
     Item[] items;
 
     public GildedRose(Item[] items) {
@@ -12,95 +10,46 @@ class GildedRose {
     public void updateItems() {
         for (int i = 0; i < items.length; i++) {
             Item currentItem = items[i];
-            if (itemIsNot("Aged Brie", currentItem)
-                && itemIsNot("Backstage passes to a TAFKAL80ETC concert", currentItem)) {
-                if (isAboveMinimumQuality(currentItem)) {
-                    if (itemIsNot("Sulfuras, Hand of Ragnaros", currentItem)) {
-                        decreaseQualityValue(currentItem);
+            ItemWrapper itemWrapper = new ItemWrapper(currentItem);
+            if (itemWrapper.itemIsNot("Aged Brie")
+                && itemWrapper.itemIsNot("Backstage passes to a TAFKAL80ETC concert")) {
+                if (itemWrapper.isAboveMinimumQuality()) {
+                    if (itemWrapper.itemIsNot("Sulfuras, Hand of Ragnaros")) {
+                        itemWrapper.decreaseQualityValue();
                     }
                 }
             } else {
-                if (isBelowMaximumQuality(currentItem)) {
-                    increaseQualityValue(currentItem);
+                if (itemWrapper.isBelowMaximumQuality()) {
+                    itemWrapper.increaseQualityValue();
 
-                    if (itemIs("Backstage passes to a TAFKAL80ETC concert", currentItem)) {
-                        addHypeQuality(currentItem);
+                    if (itemWrapper.itemIs("Backstage passes to a TAFKAL80ETC concert")) {
+                        itemWrapper.addHypeQuality();
                     }
                 }
             }
 
-            if (itemIsNot("Sulfuras, Hand of Ragnaros", currentItem)) {
-                decreaseSellInValue(currentItem);
+            if (itemWrapper.itemIsNot("Sulfuras, Hand of Ragnaros")) {
+                itemWrapper.decreaseSellInValue();
             }
 
-            if (isSellInDatePassed(currentItem)) {
-                if (itemIsNot("Aged Brie", currentItem)) {
-                    if (itemIsNot("Backstage passes to a TAFKAL80ETC concert", currentItem)) {
-                        if (isAboveMinimumQuality(currentItem)) {
-                            if (itemIsNot("Sulfuras, Hand of Ragnaros", currentItem)) {
-                                decreaseQualityValue(currentItem);
+            if (itemWrapper.isSellInDatePassed()) {
+                if (itemWrapper.itemIsNot("Aged Brie")) {
+                    if (itemWrapper.itemIsNot("Backstage passes to a TAFKAL80ETC concert")) {
+                        if (itemWrapper.isAboveMinimumQuality()) {
+                            if (itemWrapper.itemIsNot("Sulfuras, Hand of Ragnaros")) {
+                                itemWrapper.decreaseQualityValue();
                             }
                         }
                     } else {
-                        dropQuality(currentItem);
+                        itemWrapper.dropQuality();
                     }
                 } else {
-                    if (isBelowMaximumQuality(currentItem)) {
-                        increaseQualityValue(currentItem);
+                    if (itemWrapper.isBelowMaximumQuality()) {
+                        itemWrapper.increaseQualityValue();
                     }
                 }
             }
         }
-    }
-
-    private void dropQuality(Item currentItem) {
-        currentItem.quality = 0;
-    }
-
-    private void addHypeQuality(Item currentItem) {
-        if (currentItem.sellIn < 11) {
-            if (isBelowMaximumQuality(currentItem)) {
-                increaseQualityValue(currentItem);
-            }
-        }
-
-        if (currentItem.sellIn < 6) {
-            if (isBelowMaximumQuality(currentItem)) {
-                increaseQualityValue(currentItem);
-            }
-        }
-    }
-
-    private boolean isSellInDatePassed(Item currentItem) {
-        return currentItem.sellIn < 0;
-    }
-
-    private boolean itemIs(String name, Item currentItem) {
-        return currentItem.name.equals(name);
-    }
-
-    private boolean isBelowMaximumQuality(Item currentItem) {
-        return currentItem.quality < MAXIMUM_QUALITY;
-    }
-
-    private void increaseQualityValue(Item currentItem) {
-        currentItem.quality = currentItem.quality + 1;
-    }
-
-    private void decreaseQualityValue(Item item) {
-        item.quality -= 1;
-    }
-
-    private boolean isAboveMinimumQuality(Item item) {
-        return item.quality > MINIMUM_QUALITY;
-    }
-
-    private boolean itemIsNot(String itemName, Item item) {
-        return !itemIs(itemName, item);
-    }
-
-    private void decreaseSellInValue(Item item) {
-        item.sellIn -= 1;
     }
 
 }
